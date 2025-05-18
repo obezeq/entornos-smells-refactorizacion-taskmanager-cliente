@@ -76,6 +76,8 @@ class ActividadServiceTest : DescribeSpec({
             val tareaPadre = Tarea.creaInstancia("Padre")
             val subtarea = Tarea.creaInstancia("Subtarea", tareaPadre)
 
+            tareaPadre.agregarSubtarea(subtarea)
+
             beforeEach {
                 every { actividadRepo.buscarPorId(any()) } returns tareaPadre
             }
