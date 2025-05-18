@@ -18,6 +18,7 @@ import io.mockk.verify
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import io.kotest.assertions.throwables.shouldThrow
+import es.prog2425.taskmanager.aplicacion.DatosEvento
 
 class ActividadServiceTest : DescribeSpec({
     val actividadRepo = mockk<IActividadRepository>(relaxed = true)
@@ -33,13 +34,51 @@ class ActividadServiceTest : DescribeSpec({
                 .format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
 
             it("Debería guardar el evento correctamente") {
-                servicio.crearEvento("Conferencia", fechaValida, "Auditorio")
+                servicio.crearEvento(DatosEvento("Conferencia", fechaValida, "Auditorio"))
 
                 // Verificar que se llamó a agregar en el repositorio
                 verify(exactly = 1) { actividadRepo.agregar(any()) }
             }
         }
     }
+
+    // ============================================
+    // Tests para filtrado por fechas relativas
+    // ============================================
+    describe("Método cambiarEstadoTarea") {
+
+        context("Filtrado por fechas relativas") {
+            val eventoHoy = Evento.creaInstancia("Hoy", LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), "Sala")
+            val eventoManana = Evento.creaInstancia("Mañana", LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), "Sala")
+
+            beforeEach {
+                every { actividadRepo.listar() } returns listOf(eventoHoy, eventoManana)
+            }
+
+            it("Debería detectar eventos hoy correctamente") {
+                servicio.obtenerEventosProgramados().hoy shouldBe 1
+            }
+
+            it("Debería detectar eventos mañana correctamente") {
+                servicio.obtenerEventosProgramados().manana shouldBe 1
+            }
+        }
+
+        context("Opción inválida") {
+            val tarea = Tarea.creaInstancia("Tarea")
+
+            beforeEach {
+                every { actividadRepo.buscarPorId(any()) } returns tarea
+            }
+
+            it("Debería lanzar IllegalArgumentException") {
+                shouldThrow<IllegalArgumentException> {
+                    servicio.cambiarEstadoTarea(1, 99)
+                }
+            }
+        }
+    }
+
 
     // ============================================
     // Tests para obtenerResumenTareas()
