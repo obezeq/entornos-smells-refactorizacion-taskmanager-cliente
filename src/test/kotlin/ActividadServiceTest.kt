@@ -64,16 +64,25 @@ class ActividadServiceTest : DescribeSpec({
             }
         }
 
-        context("Opción inválida") {
-            val tarea = Tarea.creaInstancia("Tarea")
-
-            beforeEach {
-                every { actividadRepo.buscarPorId(any()) } returns tarea
-            }
-
+        context("Opción inválida (ej: 99)") {
             it("Debería lanzar IllegalArgumentException") {
                 shouldThrow<IllegalArgumentException> {
                     servicio.cambiarEstadoTarea(1, 99)
+                }
+            }
+        }
+
+        context("Cerrar tarea con subtareas pendientes") {
+            val tareaPadre = Tarea.creaInstancia("Padre")
+            val subtarea = Tarea.creaInstancia("Subtarea", tareaPadre)
+
+            beforeEach {
+                every { actividadRepo.buscarPorId(any()) } returns tareaPadre
+            }
+
+            it("Debería lanzar IllegalStateException") {
+                shouldThrow<IllegalStateException> {
+                    servicio.cambiarEstadoTarea(tareaPadre.id, 3)
                 }
             }
         }
