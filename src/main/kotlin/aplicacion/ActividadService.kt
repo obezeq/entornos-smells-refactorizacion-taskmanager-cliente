@@ -118,8 +118,8 @@ class ActividadService(
         return lista
     }
 
-    fun crearEvento(descripcion: String, fecha: String, ubicacion: String) {
-        val evento = Evento.creaInstancia(descripcion, fecha, ubicacion)
+    fun crearEvento(datos: DatosEvento) {
+        val evento = Evento.creaInstancia(datos.descripcion, datos.fecha, datos.ubicacion)
         repositorio.agregar(evento)
     }
 
