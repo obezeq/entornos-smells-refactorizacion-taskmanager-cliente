@@ -40,6 +40,8 @@ En concreto he utilizado la funcionalidad "Refactor", el cual para utilizarla ha
 
 Ahora lo que nos queda es refactorizar y darle el nombre a la función o lo que queramos refactorizar. Una vez refactorizado, podemos perfeccionar el método sin problemas.
 
+*(Pongo ejemplos y capturas de pantalla mas adelante)*
+
 ---
 
 ### **1.b Mejora con Pruebas Unitarias**  
@@ -82,11 +84,35 @@ Para asegurarme de que la refactorización no rompía nada:
 ## 3. Uso del IDE para Refactorizar
 
 ### **3.a Funcionalidades de IntelliJ Usadas**
+
+---
+
 1. **Extract Method**:
    - **Ejemplo:** Para crear `esHoy()` desde el bloque `"hoy"` en `obtenerPorFecha`.
+   - Ejecuto la opción del IDE `Refactor > Function` del IDE como hemos mencionado previamente.
+      - ![Refactor Option](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactor-option.png)
+      - ![Refactor Option](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactor-function-option.png)
+   - Ahora aceptamos las consecuencias, pues no habría ningún conflicto como tal que nos afecte, solamente estamos refactorizando, y clickamos en `Refactor Anyway`
+      - ![Refactoring Conflicts esHoy](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactoring-conflicts-es-hoy.png)
+   - Ahora refactorizamos el método según nuestras necesidades y elegimos el nombre.
+      - ![Refactoring esHoy](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactoring-es-hoy.png)
+   - Después, una vez refactorizado, modifico el método para afinarlo mas a mis necesidades modificando un poco la función y ya daría por terminada la refactorización de este método.
+      - ![Refactoring Updated esHoy](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactoring-updated-es-hoy.png)
+   - He seguido este procedimiento con todos los métodos para `obtenerPorFecha` así como: `esHoy`, `esManana`, `esEstaSemana` y `esEsteMes`.
+
+---
 
 2. **Change Signature**:
    - **Ejemplo:** Cambiar `crearEvento(String, String, String)` a `crearEvento(DatosEvento)`.
+   - Primero selecciono los parámetros
+     - ![Selecting Parameters](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/selecting-crearEvento-parameters.png)
+   - Ahora ejecuto la opción **Refactor > Change Signature**
+     - ![Refactor Option](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactor-option.png)
+     - ![Refactor Change Signature Option](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/refactor-change-signature-option.png)
+   - Y a partir de aquí elegimos la opción que nos sea mas conveniente para nuestro caso.
+     - ![Refactor Changing Signature](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/crearEvento-changing-signature.png)
+
+---
 
 3. **Safe Delete**:
    - **Ejemplo:** Eliminar el método `verificarSubtareas` sin romper nada.
@@ -100,6 +126,13 @@ Para asegurarme de que la refactorización no rompía nada:
 | Extraer Método           | `ActividadServiceTest`         | `obtenerEventosProgramados cuenta eventos hoy y mañana` |  
 | Introducir Objeto        | `ActividadServiceTest`         | `crearEvento con DatosEvento válidos`                   |  
 | Simplificar Condicional  | `ActividadServiceTest`         | `cambiarEstadoTarea lanza excepción con subtareas`      |  
+
+- **Para inicializar los tests ejecuto con `gradlew test`**
+![TESTS Initializing](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/tests-initializing.png)
+![TESTS Executing](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/tests-executing.png)
+![TESTS Successful](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/tests-successful.png)
+- **Adjunto el documento HTML generado por Gradle**, el cual se encuentra en `build/reports/tests/test/index.html` el cual muestra de una forma muy visual que todos los tests han tenido éxito *satisfactoriamente*.
+![TESTS HTML](https://raw.githubusercontent.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/refs/heads/P4.3.2-EOB/img/tests-html.png)
 
 ---
 
