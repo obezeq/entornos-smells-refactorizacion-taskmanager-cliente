@@ -82,29 +82,37 @@ class ActividadService(
         }
     }
 
+    private fun esHoy(evento: Evento, hoy: LocalDate): Boolean {
+        val fechaEvento = parsearFechaEvento(evento)
+        return fechaEvento?.isEqual(hoy) ?: false
+    }
+
+    private fun esManana(evento: Evento, hoy: LocalDate): Boolean {
+        val fechaEvento = parsearFechaEvento(evento)
+        return fechaEvento?.isEqual(hoy.plusDays(1)) ?: false
+    }
+
+    private fun esEstaSemana(evento: Evento, hoy: LocalDate): Boolean {
+        val fechaEvento = parsearFechaEvento(evento) ?: return false
+        return !fechaEvento.isBefore(hoy) && fechaEvento.isBefore(hoy.plusWeeks(1))
+    }
+
+    private fun esEsteMes(evento: Evento, hoy: LocalDate): Boolean {
+        val fechaEvento = parsearFechaEvento(evento) ?: return false
+        return fechaEvento.month == hoy.month && fechaEvento.year == hoy.year
+    }
+
     private fun obtenerPorFecha(fecha: String): List<Evento> {
         val hoy = LocalDate.now()
         val eventos = repositorio.listar().filterIsInstance<Evento>()
         val lista = mutableListOf<Evento>()
-        fun fechaValida(evento: Evento): LocalDate? = parsearFechaEvento(evento)
 
-        eventos.forEach {
+        eventos.forEach { evento ->
             when (fecha) {
-                "hoy" -> if (fechaValida(it)?.isEqual(hoy) == true) lista.add(it)
-
-
-                "mañana" -> if (fechaValida(it)?.isEqual(hoy.plusDays(1)) == true) lista.add(it)
-
-
-                "esta semana" -> {
-                    val fecha = fechaValida(it)
-                    if (fecha != null) if(!fecha.isBefore(hoy) && fecha.isBefore(hoy.plusWeeks(1))) lista.add(it)
-                }
-
-                "este mes" -> {
-                    val fecha = fechaValida(it)
-                    if (fecha != null) if (fecha.month == hoy.month && fecha.year == hoy.year) lista.add(it)
-                }
+                "hoy" -> if (esHoy(evento, hoy)) lista.add(evento)
+                "mañana" -> if (esManana(evento, hoy)) lista.add(evento)
+                "esta semana" -> if (esEstaSemana(evento, hoy)) lista.add(evento)
+                "este mes" -> if (esEsteMes(evento, hoy)) lista.add(evento)
             }
         }
         return lista
