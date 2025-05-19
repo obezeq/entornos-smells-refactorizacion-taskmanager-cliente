@@ -133,6 +133,15 @@ class ActividadService(
         parent.agregarSubtarea(subtarea)
     }
 
+    private fun obtenerEstadoDesdeOpcion(opcion: Int): Estado {
+        return when (opcion) {
+            1 -> Estado.ABIERTA
+            2 -> Estado.EN_PROGRESO
+            3 -> Estado.FINALIZADA
+            else -> throw IllegalArgumentException("Opción incorrecta")
+        }
+    }
+
     fun cambiarEstadoTarea(tareaId: Long, opcionElegida: Int) {
         Logger.info("Cambiando estado tarea:$tareaId | Opción:$opcionElegida")
 
@@ -141,20 +150,14 @@ class ActividadService(
                 Logger.warn("Intento de cambiar estado en no-tarea: ID$tareaId")
             }
 
-        val estado = when (opcionElegida) {
-            1 -> Estado.ABIERTA
-            2 -> Estado.EN_PROGRESO
-            3 -> {
-                if (!tarea.puedeCerrarse()) {
-                    Logger.error("Intento de cerrar tarea $tareaId con subtareas pendientes")
-                    throw IllegalStateException("Subtareas pendientes | Tarea:$tareaId")
-                } else Estado.FINALIZADA
-            }
-            else -> throw IllegalArgumentException("Opción incorrecta")
+        val estado = obtenerEstadoDesdeOpcion(opcionElegida)
+
+        if (estado == Estado.FINALIZADA && !tarea.puedeCerrarse()) {
+            Logger.error("Intento de cerrar tarea $tareaId con subtareas pendientes")
+            throw IllegalStateException("Subtareas pendientes | Tarea:$tareaId")
         }
 
         tarea.cambiarEstado(estado)
-
     }
 
     fun obtenerResumenTareas(): ResumenTareas {
