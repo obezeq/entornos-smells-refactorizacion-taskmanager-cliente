@@ -159,7 +159,6 @@ class ActividadService(
 
         tarea.cambiarEstado(estado)
     }
-
     fun obtenerResumenTareas(): ResumenTareas {
         val tareas = repositorio.listar().filterIsInstance<Tarea>()
 

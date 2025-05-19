@@ -1,6 +1,7 @@
 package es.prog2425.taskmanager.presentacion
 
 import es.prog2425.taskmanager.aplicacion.ActividadService
+import es.prog2425.taskmanager.aplicacion.DatosEvento
 import es.prog2425.taskmanager.dominio.Actividad
 import es.prog2425.taskmanager.dominio.Tarea
 import es.prog2425.taskmanager.dominio.Estado
@@ -207,7 +208,7 @@ class ConsolaUI(private val servicio: ActividadService) {
         val ubicacion = readln()
 
         try {
-            servicio.crearEvento(descripcion, fecha, ubicacion)
+            servicio.crearEvento(DatosEvento(descripcion, fecha, ubicacion))
             println("[+] Evento creado correctamente")
         } catch (e: Exception) {
             Logger.warn("Error al crear evento: ${e.message}")
