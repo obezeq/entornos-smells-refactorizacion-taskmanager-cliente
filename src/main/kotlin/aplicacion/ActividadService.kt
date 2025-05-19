@@ -74,17 +74,19 @@ class ActividadService(
         return obtenerPorFecha(fecha)
     }
 
+    private fun parsearFechaEvento(evento: Evento): LocalDate? {
+        return try {
+            LocalDate.parse(evento.fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     private fun obtenerPorFecha(fecha: String): List<Evento> {
         val hoy = LocalDate.now()
         val eventos = repositorio.listar().filterIsInstance<Evento>()
         val lista = mutableListOf<Evento>()
-        fun fechaValida(evento: Evento): LocalDate? {
-            return try {
-                LocalDate.parse(evento.fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-            } catch (e: Exception) {
-                null
-            }
-        }
+        fun fechaValida(evento: Evento): LocalDate? = parsearFechaEvento(evento)
 
         eventos.forEach {
             when (fecha) {
