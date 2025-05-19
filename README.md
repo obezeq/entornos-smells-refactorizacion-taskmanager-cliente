@@ -116,6 +116,7 @@ Para asegurarme de que la refactorización no rompía nada:
 
 3. **Safe Delete**:
    - **Ejemplo:** Eliminar el método `verificarSubtareas` sin romper nada.
+   - **Commit:** [c2f7e62](https://github.com/obezeq/entornos-smells-refactorizacion-taskmanager-cliente/commit/c2f7e62ef81aaacb66bee332e97f8080a0ca8093)
 
 ---
 
